@@ -1,0 +1,124 @@
+/*
+ * styles/globals.css
+ * DashBets — Global stylesheet.
+ *
+ * 1. Tailwind base / components / utilities
+ * 2. CSS custom properties (design tokens)
+ * 3. Minimal global resets & utility classes
+ */
+
+/* ── Tailwind layers ──────────────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ───────────────────────────────────────────────────────── */
+:root {
+  /* Brand palette */
+  --color-brand:        #6366f1;   /* indigo-500  */
+  --color-brand-light:  #818cf8;   /* indigo-400  */
+  --color-brand-dark:   #4338ca;   /* indigo-700  */
+
+  /* Surface hierarchy */
+  --color-bg:           #111827;   /* gray-900 */
+  --color-surface:      #1f2937;   /* gray-800 */
+  --color-surface-alt:  #111827;   /* gray-900 — alternate stripe */
+  --color-border:       #374151;   /* gray-700 */
+
+  /* Semantic */
+  --color-win:          #22c55e;   /* green-500  */
+  --color-loss:         #6b7280;   /* gray-500   */
+  --color-jackpot:      #facc15;   /* yellow-400 */
+  --color-refund:       #f59e0b;   /* amber-400  */
+  --color-danger:       #ef4444;   /* red-500    */
+
+  /* Typography */
+  --font-mono:    'DM Mono', 'Fira Mono', monospace;
+  --font-display: 'Syne', system-ui, sans-serif;
+
+  /* Motion */
+  --ease-wheel:   cubic-bezier(0.17, 0.67, 0.12, 1.0);
+  --duration-spin: 3.5s;
+}
+
+/* ── Base resets ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Smooth scroll for in-page anchors */
+  scroll-behavior: smooth;
+  /* Prevent layout shift from scrollbar appearing */
+  overflow-y: scroll;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #f9fafb;           /* gray-50 */
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Minimum height so bg covers short pages */
+  min-height: 100dvh;
+}
+
+/* ── Tailwind missing utility: bg-gray-850 ───────────────────────────────── */
+/*
+  Tailwind's default palette skips 850. Used for alternating table rows.
+  If you're on Tailwind v3.3+ you can add this in tailwind.config.js instead.
+*/
+.bg-gray-850 {
+  background-color: #1a2332;
+}
+
+/* ── Focus-visible ring colour ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-brand-light);
+  outline-offset: 2px;
+}
+
+/* ── Scrollbar styling (Webkit) ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563; /* gray-600 */
+}
+
+/* ── Number / amount display ─────────────────────────────────────────────── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Spin wheel animation (used by SpinWheel.tsx via CSS var) ────────────── */
+@keyframes wheelSpin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Result bar shrink (used by SpinResult.tsx) ──────────────────────────── */
+@keyframes shrink {
+  from { width: 100%; }
+  to   { width: 0%;   }
+}
+
+/* ── Pulsing glow for active/spinning state ──────────────────────────────── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px 6px rgba(99, 102, 241, 0.2); }
+  50%       { box-shadow: 0 0 40px 14px rgba(99, 102, 241, 0.45); }
+}
+
+.animate-glow {
+  animation: glowPulse 2s ease-in-out infinite;
+}

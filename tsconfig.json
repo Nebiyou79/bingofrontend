@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/api/poolApi.ts", "src/hooks/usePoolGame.js", "src/hooks/usePoolSocket.js", "src/hooks/useBallInterpolation.js"],
   "exclude": ["node_modules"]
 }
