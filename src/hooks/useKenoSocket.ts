@@ -55,6 +55,16 @@ export interface NumberStat {
   frequency: number;
 }
 
+// ── NEW: result shown in the post-round result card ────────────────────────────
+export interface KenoLastResult {
+  roundId:      string;
+  roundNumber:  number;
+  drawnNumbers: number[];
+  tickets:      KenoTicket[];
+  totalPayout:  number;
+  isWin:        boolean;
+}
+
 export interface UseKenoSocketReturn {
   connected:        boolean;
   round:            KenoRoundState | null;
@@ -65,6 +75,7 @@ export interface UseKenoSocketReturn {
   history:          KenoHistoryRound[];
   historyPagination:{ page: number; totalPages: number; total: number } | null;
   numberStats:      NumberStat[];
+  lastResult:       KenoLastResult | null;
   error:            string | null;
   balance:          number | null;
 
@@ -76,12 +87,6 @@ export interface UseKenoSocketReturn {
 }
 
 // ── Backend URL ───────────────────────────────────────────────────────────────
-// In development the Next.js dev server (port 3000) and the Express/Socket.IO
-// backend (port 5000) are on different ports, so a relative path like '/keno'
-// would try to connect to port 3000 and fail.
-// NEXT_PUBLIC_API_URL should be set to 'http://localhost:5000' in .env.local
-// and to your production API origin in production.
-// Line ~70
 const BACKEND_URL = process.env.NEXT_PUBLIC_SOCKET_URL ?? 'http://localhost:5000';
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
@@ -97,8 +102,14 @@ export function useKenoSocket(token: string | null): UseKenoSocketReturn {
   const [history,           setHistory]           = useState<KenoHistoryRound[]>([]);
   const [historyPagination, setHistoryPagination] = useState<{ page: number; totalPages: number; total: number } | null>(null);
   const [numberStats,       setNumberStats]       = useState<NumberStat[]>([]);
+  const [lastResult,        setLastResult]        = useState<KenoLastResult | null>(null);
   const [error,             setError]             = useState<string | null>(null);
   const [balance,           setBalance]           = useState<number | null>(null);
+
+  // Keep a ref to the latest round so socket callbacks always see fresh data
+  // without needing `round` in their dependency array.
+  const roundRef = useRef<KenoRoundState | null>(null);
+  useEffect(() => { roundRef.current = round; }, [round]);
 
   const mountedRef = useRef(true);
   useEffect(() => {
@@ -110,7 +121,6 @@ export function useKenoSocket(token: string | null): UseKenoSocketReturn {
   useEffect(() => {
     if (!token) return;
 
-    // FIX: Use both WebSocket and polling transports for better reliability
     const socket = io(`${BACKEND_URL}/keno`, {
       auth:                 { token },
       transports:           ['websocket', 'polling'],
@@ -135,6 +145,7 @@ export function useKenoSocket(token: string | null): UseKenoSocketReturn {
       if (data.status === 'betting') {
         setDrawnSoFar([]);
         setLatestBall(null);
+        setLastResult(null);
       }
       if (data.drawnNumbers?.length) {
         setDrawnSoFar(data.drawnNumbers);
@@ -186,13 +197,28 @@ export function useKenoSocket(token: string | null): UseKenoSocketReturn {
 
     // ── ticket:repeat_item — re-populate the bet form ─────────────────────────
     socket.on('ticket:repeat_item', (item: { pickedNumbers: number[]; betAmount: number }) => {
-      // Bubble up via a custom event so the page can handle it
       window.dispatchEvent(new CustomEvent('keno:repeat_item', { detail: item }));
     });
 
     // ── round:my_tickets_result ───────────────────────────────────────────────
     socket.on('round:my_tickets_result', ({ tickets }: { tickets: KenoTicket[] }) => {
-      if (mountedRef.current) setMyTickets(tickets);
+      if (!mountedRef.current) return;
+      setMyTickets(tickets);
+
+      // If these tickets are settled, build the lastResult for the result card
+      const settledTickets = tickets.filter(t => t.status === 'settled');
+      const currentRound = roundRef.current;
+      if (settledTickets.length > 0 && currentRound) {
+        const totalPayout = settledTickets.reduce((sum, t) => sum + t.payout, 0);
+        setLastResult({
+          roundId:      currentRound.roundId,
+          roundNumber:  currentRound.roundNumber,
+          drawnNumbers: currentRound.drawnNumbers,
+          tickets:      settledTickets,
+          totalPayout,
+          isWin:        settledTickets.some(t => t.isWin),
+        });
+      }
     });
 
     // ── round:history_result ──────────────────────────────────────────────────
@@ -240,7 +266,7 @@ export function useKenoSocket(token: string | null): UseKenoSocketReturn {
   return {
     connected, round, secondsLeft, drawnSoFar, latestBall,
     myTickets, history, historyPagination, numberStats,
-    error, balance,
+    lastResult, error, balance,
     placeTicket, repeatTickets, fetchHistory, fetchStats, clearError,
   };
 }
