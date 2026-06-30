@@ -8,8 +8,8 @@ import { getTransactions } from '../lib/api/walletApi';
 import type { Transaction, Pagination } from '../lib/api/walletApi';
 
 interface Filters {
-  type?: Transaction['type'];
-  status?: Transaction['status'];
+  type?: Transaction['type'] | '';
+  status?: Transaction['status'] | '';
 }
 
 interface TransactionState {
@@ -44,7 +44,12 @@ export function useTransactions(): UseTransactionsReturn {
   const fetch = useCallback(async () => {
     setState(s => ({ ...s, loading: true, error: null }));
     try {
-      const res = await getTransactions(page, 20, filters.type, filters.status);
+      const res = await getTransactions(
+        page,
+        20,
+        filters.type === '' ? undefined : filters.type,
+        filters.status === '' ? undefined : filters.status,
+      );
       if (res.success) {
         setState({ transactions: res.transactions, pagination: res.pagination, loading: false, error: null });
       } else {

@@ -79,3 +79,28 @@ export interface GameBet {
     payout: number;
     createdAt: string;
 }
+// ── Transactions ──────────────────────────────────────────────────────────────
+export type TransactionType =
+  | 'deposit'
+  | 'withdrawal'
+  | 'bingo_entry'
+  | 'spin_entry'
+  | 'spin_win'
+  | 'spin_refund';
+
+export type TransactionStatus =
+  | 'pending'
+  | 'submitted'
+  | 'approved'
+  | 'rejected'
+  | 'completed'
+  | 'expired';
+
+export interface Transaction {
+  _id: string;
+  type: TransactionType;
+  status: TransactionStatus;
+  amount: number;
+  method?: 'telebirr' | 'cbebirr';
+  createdAt: string;
+}
