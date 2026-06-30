@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: false,
 
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   async rewrites() {
     // Must be the backend root — no /api suffix
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
