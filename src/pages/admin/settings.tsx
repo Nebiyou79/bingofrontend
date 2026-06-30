@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/settings.tsx
  */
@@ -5,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AdminLayout } from '../../components/admin/AdminLayout';
-import { Card, SectionTitle, Btn, Input, Select, useToast } from '../../components/admin/AdminUI';
+import { Card, SectionTitle, Btn, Input, useToast } from '../../components/admin/AdminUI';
 import { useAdminSettings } from '../../hooks/useAdmin';
 
 const AdminSettings: NextPage = () => {

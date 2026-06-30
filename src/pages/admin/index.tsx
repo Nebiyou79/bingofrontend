@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/index.tsx
  * Admin dashboard — overview stats, pending actions, live games, jackpots.
@@ -11,7 +12,6 @@ import { useAuthContext } from '../../context/AuthContext';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 import { Card, StatCard, SectionTitle, Badge, fmtETB, fmtDate, useToast } from '../../components/admin/AdminUI';
 import { usePendingTransactions, useAdminDashboard } from '../../hooks/useAdmin';
-import * as api from '../../lib/api/adminApi';
 
 // ── Pending Transaction Row ───────────────────────────────────────────────────
 function PendingRow({
@@ -25,7 +25,6 @@ function PendingRow({
   onReject: () => void;
   busy: boolean;
 }) {
-  const isDeposit = tx.type === 'deposit';
   return (
     <div
       className="flex items-center gap-4 py-3"

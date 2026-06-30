@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/transactions.tsx
  * Full transaction list with filters, approve/reject actions, and pagination.
@@ -52,7 +53,7 @@ const AdminTransactions: NextPage = () => {
 
   const { show, Toast } = useToast();
 
-  const { transactions, pagination, loading, actionLoading, params, setParams, approve, reject } =
+  const { transactions, pagination, loading, actionLoading, setParams, approve, reject } =
     useAdminTransactions({ page, limit: 30 });
 
   const applyFilters = () => {

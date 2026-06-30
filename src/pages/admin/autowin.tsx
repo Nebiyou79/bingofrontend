@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/autowin.tsx
  * Enable / disable auto-win for bingo. Shows audit log.
@@ -9,7 +10,7 @@ import Head from 'next/head';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 import {
   Card, SectionTitle, Btn, Input, Select, Table, TR, TD,
-  Badge, fmtDate, useToast,
+   fmtDate, useToast,
 } from '../../components/admin/AdminUI';
 import { useAutoWin } from '../../hooks/useAdmin';
 
@@ -35,8 +36,9 @@ const AdminAutoWin: NextPage = () => {
     const res = await enable({
       targetCardNumbers: nums,
       maxDrawsToWin: Number(maxDraws),
-      stakeFilter: stake ? Number(stake) : null,
-      resetAfterGame: resetAfter,
+      stakeFilter: stake ? stake : null,
+      // API expects a gamesLimit (number of games to keep enabled); use 1 when "reset after game" is true
+      gamesLimit: resetAfter ? 1 : null,
       notes,
     });
     show(res.success ? 'Auto-win enabled' : (res as any).error, res.success ? 'ok' : 'err');
@@ -86,7 +88,7 @@ const AdminAutoWin: NextPage = () => {
                     <InfoRow label="Target Cards" value={state.targetCardNumbers?.join(', ') ?? '—'} />
                     <InfoRow label="Max Draws"    value={String(state.maxDrawsToWin)} />
                     <InfoRow label="Stake Filter" value={state.stakeFilter ? `${state.stakeFilter} ETB` : 'All stakes'} />
-                    <InfoRow label="Reset After"  value={state.resetAfterGame ? 'Yes' : 'No'} />
+                    <InfoRow label="Reset After"  value={state.gamesLimit ? 'Yes' : 'No'} />
                     <InfoRow label="Enabled At"   value={fmtDate(state.enabledAt)} />
                   </div>
                 )}

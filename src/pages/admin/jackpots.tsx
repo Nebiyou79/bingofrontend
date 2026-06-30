@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/jackpots.tsx
  */
@@ -6,7 +7,7 @@ import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AdminLayout } from '../../components/admin/AdminLayout';
-import { Card, SectionTitle, Btn, Input, Modal, fmtETB, fmtDate, useToast } from '../../components/admin/AdminUI';
+import { Card, Btn, Input, Modal, fmtETB, fmtDate, useToast } from '../../components/admin/AdminUI';
 import { useAdminJackpots } from '../../hooks/useAdmin';
 
 const JP_META: Record<string, { color: string; emoji: string }> = {
