@@ -119,23 +119,12 @@ export function BetSelector({ onPlay, isLoading, userBalance, payoutTable }: Bet
     setBets(prev => prev.filter((_, i) => i !== index));
   };
 
-  const getMultiplier = (type: BetType): string => {
-    if (!payoutTable) return '—';
+const getMultiplier = (type: BetType, value: string): string => {
+  if (!payoutTable) return '—';
 
-    if (type === 'exact') {
-      const entry = payoutTable.find(p => p.type === 'exact');
-      return entry ? `${entry.multiplier.toFixed(2)}x` : '—';
-    }
-
-    if (type === 'suit') {
-      const entry = payoutTable.find(p => p.type === 'suit');
-      return entry ? `${entry.multiplier.toFixed(2)}x` : '—';
-    }
-
-    // For color bets
-    const entry = payoutTable.find(p => p.type === type);
-    return entry ? `${entry.multiplier.toFixed(2)}x` : '—';
-  };
+  const entry = payoutTable.find(p => p.type === type);
+  return entry ? `${entry.multiplier.toFixed(2)}x` : '—';
+};
 
   const handlePlay = () => {
     if (!canPlay || isLoading) return;

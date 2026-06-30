@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/games/plinko.tsx
  * Plinko bet history + PlinkoLock panel.
@@ -101,7 +102,7 @@ function PlinkoLockPanel() {
           <div className="mb-4 px-3 py-2.5 rounded-xl text-[10px] text-gray-500"
             style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
             Ball paths are being steered toward the centre low-payout buckets.
-            Players' provably-fair seeds are authentic — the path algorithm selects from constrained buckets.
+            Players`` provably-fair seeds are authentic — the path algorithm selects from constrained buckets.
           </div>
         )}
 

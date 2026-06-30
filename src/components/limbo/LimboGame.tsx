@@ -1,4 +1,3 @@
-// components/limbo/LimboGame.tsx
 'use client';
 
 import { useState } from 'react';
@@ -11,15 +10,38 @@ function counterTone(multiplier: number) {
   return 'text-rose-500';
 }
 
-export default function LimboGame() {
+export default function LimboGame({ token }: { token: string | null }) {
   const {
-    connected, phase, secondsLeft, multiplier,
-    lastSettled, history, myBetStatus, balance, error,
-    canBet, placeBet,
-  } = useLimboSocket();
+    state,
+    winChance,
+    potentialPayout,
+    placeBet,
+    setTarget,
+    setBetAmount,
+  } = useLimboSocket(token, (newBalance) => setBalance(newBalance));
 
-  const [betAmount, setBetAmount] = useState(10);
-  const [target, setTarget] = useState(2.0);
+  const [balance, setBalance] = useState<number | null>(null);
+
+  const {
+    connected, phase, roundNumber, crashPoint,
+    hasBet, betAmount, targetMultiplier,
+    bettingClosesIn, lastResult, history, error,
+  } = state;
+
+  const secondsLeft = Math.ceil(bettingClosesIn / 1000);
+  const canBet = phase === 'betting' && !hasBet;
+
+  // "multiplier" displayed in the climbing counter — betting shows target,
+  // revealing/result shows the actual crash point once known
+  const multiplier =
+    phase === 'revealing' || phase === 'result'
+      ? (crashPoint ?? targetMultiplier)
+      : targetMultiplier;
+
+  const myBetStatus: 'none' | 'won' | 'lost' =
+    !hasBet ? 'none' : lastResult?.roundNumber === roundNumber
+      ? (lastResult.isWin ? 'won' : 'lost')
+      : 'none';
 
   const resultLabel =
     myBetStatus === 'won'  ? 'You won!' :
@@ -36,23 +58,20 @@ export default function LimboGame() {
         </div>
       </div>
 
-      {/* Climbing counter */}
       <div className="mb-8 flex flex-col items-center justify-center rounded-xl border border-white/5 bg-black/30 py-10">
-        <span
-          className={`font-mono text-5xl font-bold tabular-nums transition-colors duration-200 ${counterTone(multiplier)}`}
-        >
+        <span className={`font-mono text-5xl font-bold tabular-nums transition-colors duration-200 ${counterTone(multiplier)}`}>
           {multiplier.toFixed(2)}x
         </span>
 
         {phase === 'betting' && (
           <span className="mt-3 text-sm text-zinc-400">Betting closes in {secondsLeft}s</span>
         )}
-        {phase === 'running' && (
+        {phase === 'revealing' && (
           <span className="mt-3 text-sm text-zinc-400">Climbing…</span>
         )}
-        {phase === 'settled' && lastSettled && (
+        {phase === 'result' && crashPoint != null && (
           <span className="mt-3 text-sm text-zinc-400">
-            Crashed at {lastSettled.crashPoint.toFixed(2)}x
+            Crashed at {crashPoint.toFixed(2)}x
             {resultLabel && <span className={`ml-2 font-semibold ${myBetStatus === 'won' ? 'text-emerald-400' : 'text-rose-400'}`}>{resultLabel}</span>}
           </span>
         )}
@@ -60,7 +79,6 @@ export default function LimboGame() {
 
       {error && <p className="mb-4 text-center text-sm text-rose-400">{error}</p>}
 
-      {/* Bet controls */}
       <div className="mb-8 flex flex-wrap items-end justify-center gap-4">
         <div className="flex flex-col gap-1">
           <label className="text-xs uppercase tracking-wide text-zinc-500">Bet amount</label>
@@ -81,7 +99,7 @@ export default function LimboGame() {
             min={1.01}
             max={1000}
             step={0.01}
-            value={target}
+            value={targetMultiplier}
             onChange={(e) => setTarget(Number(e.target.value))}
             disabled={!canBet}
             className="w-28 rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-center text-zinc-100 outline-none focus:border-indigo-400 disabled:opacity-50"
@@ -89,29 +107,27 @@ export default function LimboGame() {
         </div>
 
         <button
-          onClick={() => placeBet(betAmount, target)}
-          disabled={!canBet || betAmount < 1 || target < 1.01 || target > 1000}
+          onClick={() => placeBet(betAmount, targetMultiplier)}
+          disabled={!canBet || betAmount < 1 || targetMultiplier < 1.01 || targetMultiplier > 1000}
           className="rounded-lg bg-indigo-500 px-6 py-2.5 font-semibold text-white transition hover:bg-indigo-400 disabled:opacity-50"
         >
-          {myBetStatus === 'none' ? 'Place bet' : 'Bet placed'}
+          {!hasBet ? 'Place bet' : 'Bet placed'}
         </button>
       </div>
 
-      {/* Win chance preview (1% house edge baked into the formula) */}
-      {canBet && target >= 1.01 && (
+      {canBet && targetMultiplier >= 1.01 && (
         <p className="mb-6 text-center text-xs text-zinc-500">
-          Win chance ≈ {((0.99 / target) * 100).toFixed(2)}% · Payout if it hits: {(betAmount * target).toFixed(2)} ETB
+          Win chance ≈ {winChance.toFixed(2)}% · Payout if it hits: {potentialPayout.toFixed(2)} ETB
         </p>
       )}
 
-      {/* Round history strip */}
       {history.length > 0 && (
         <div>
           <p className="mb-2 text-xs uppercase tracking-wide text-zinc-500">Recent rounds</p>
           <div className="flex flex-wrap gap-2">
             {history.map((r) => (
               <span
-                key={r.roundId}
+                key={r.roundNumber}
                 className={`rounded-md px-2 py-1 text-xs font-medium ${
                   r.crashPoint >= 2 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
                 }`}

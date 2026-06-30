@@ -4,8 +4,14 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { DepositMethod, Agent } from '../../types';
+import { DepositMethod } from '../../types';
 import { getAgents } from '../../lib/api/walletApi';
+
+interface Agent {
+  method: DepositMethod;
+  name: string;
+  phone: string;
+}
 
 interface PaymentMethodSelectorProps {
   value: DepositMethod | null;
@@ -23,7 +29,13 @@ export function PaymentMethodSelector({ value, onChange, disabled = false }: Pay
   const [agents, setAgents] = useState<Agent[]>([]);
 
   useEffect(() => {
-    getAgents().then(res => setAgents(res.agents)).catch(() => {});
+    getAgents()
+      .then(res => {
+        if ('agents' in res) {
+          setAgents(res.agents);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const agentFor = (method: DepositMethod) => agents.find(a => a.method === method);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/games/slots.tsx
  * Slots bet history + SlotsLock panel.

@@ -64,7 +64,7 @@ function ChoiceDisplay({ choice, label, isPlayer }: { choice: RPSChoice | null; 
           opacity: choice ? 1 : 0.4,
         }}
       >
-        {Icon ? <Icon size={34} strokeWidth={1.5} style={{ color: cfg!.color }} /> : <span className="text-2xl text-gray-600">?</span>}
+        {Icon ? <Icon size={34} style={{ color: cfg!.color }} /> : <span className="text-2xl text-gray-600">?</span>}
       </div>
       <span className="text-xs font-bold capitalize" style={{ color: cfg ? '#e5e7eb' : '#374151' }}>
         {choice ? cfg?.label : '—'}
@@ -194,7 +194,7 @@ export function RPSArena({
                     (e.currentTarget as HTMLElement).style.transform = 'none';
                   }}
                 >
-                  <Icon size={30} strokeWidth={1.4} style={{ color: canPick ? color : '#4b5563' }} />
+                  <Icon size={30} style={{ color: canPick ? color : '#4b5563' }} />
                   <span className="text-xs font-bold" style={{ color: canPick ? '#d1d5db' : '#4b5563' }}>{label}</span>
                 </button>
               ))}
@@ -220,7 +220,7 @@ export function RPSArena({
         {/* No session */}
         {phase === 'idle' && !playerChoice && (
           <div className="flex flex-col items-center justify-center py-14 text-gray-600">
-            <IconRock size={40} strokeWidth={1.3} className="mb-3 opacity-30" />
+            <IconRock size={40} className="mb-3 opacity-30" />
             <p className="text-sm">Set your bet and start a round!</p>
           </div>
         )}

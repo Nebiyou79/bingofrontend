@@ -116,7 +116,7 @@ interface SlotsReelsProps {
 
 export function SlotsReels({
   phase, reels, winningLine, payout, multiplier, winType, onRevealComplete,
-  isFreeSpinBonus, freeSpinsRemaining, totalFreeWin,
+  isFreeSpinBonus, totalFreeWin,
 }: SlotsReelsProps) {
   const isSpinning = phase === 'spinning' || phase === 'freeSpinning';
   const isRevealing = phase === 'revealing';

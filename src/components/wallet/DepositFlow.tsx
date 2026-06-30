@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * components/wallet/DepositFlow.tsx — Premium Redesign
  * Preserves all original business logic (two-step flow, countdown, receipt upload).

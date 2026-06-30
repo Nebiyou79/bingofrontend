@@ -24,7 +24,7 @@ interface GameCardProps {
   badge?: string;
 }
 
-function GameCard({ href, emoji, title, tagline, rtp, color, glowColor, badge }: GameCardProps) {
+function GameCard({ href, emoji, title, tagline, rtp, glowColor, badge }: GameCardProps) {
   const inner = (
     <div
       className="group relative rounded-2xl p-5 overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
@@ -116,48 +116,6 @@ function StatBadge({ value, label }: { value: string; label: string }) {
   );
 }
 
-// ─── Jackpot Display ─────────────────────────────────────────────────────────
-
-function JackpotRow({ label, amount, color }: { label: string; amount: string; color: string }) {
-  return (
-    <div className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
-      <span
-        className="text-xs font-bold uppercase tracking-widest"
-        style={{ color, fontFamily: "'Rajdhani', sans-serif" }}
-      >
-        {label}
-      </span>
-      <span className="text-sm font-bold text-white font-mono tabular-nums">{amount} ETB</span>
-    </div>
-  );
-}
-
-// ─── Feature Card ─────────────────────────────────────────────────────────────
-
-function FeatureCard({ icon, title, body }: { icon: string; title: string; body: string }) {
-  return (
-    <div
-      className="flex gap-4 p-4 rounded-xl transition-all hover:bg-white/5"
-      style={{ border: '1px solid rgba(255,255,255,0.06)' }}
-    >
-      <div
-        className="w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0"
-        style={{ background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.2)' }}
-      >
-        {icon}
-      </div>
-      <div>
-        <h3
-          className="text-sm font-bold text-white mb-1"
-          style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '0.04em' }}
-        >
-          {title}
-        </h3>
-        <p className="text-xs text-gray-500 leading-relaxed">{body}</p>
-      </div>
-    </div>
-  );
-}
 
 // ─── Live Winner Row ──────────────────────────────────────────────────────────
 

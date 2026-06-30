@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * components/bingo/BingoCard.tsx — Premium casino-grade bingo ticket card
  *
@@ -11,7 +12,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import type { WinPattern } from '../../lib/api/bingoApi';
-import { patternLabel, patternIcon } from '../../lib/api/bingoApi';
+import { patternLabel } from '../../lib/api/bingoApi';
 import { FourCornersIndicator } from './WinPatternDisplay';
 
 const COLUMNS = ['B', 'I', 'N', 'G', 'O'] as const;

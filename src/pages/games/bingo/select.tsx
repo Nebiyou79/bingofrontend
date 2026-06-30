@@ -4,11 +4,10 @@
  * All hooks/socket/API logic preserved.
  */
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useAuthContext } from '../../../context/AuthContext';
-import { CardNumberGrid } from '../../../components/bingo/CardNumberGrid';
 import { BingoCard } from '../../../components/bingo/BingoCard';
 import { useCardSelector } from '../../../hooks/useCardSelector';
 import { getRoomById } from '../../../lib/api/bingoApi';
@@ -60,7 +59,6 @@ function HeroSection({
   playerCount, 
   minPlayers, 
   countdownSeconds,
-  roomLoading 
 }: { 
   roomId: string;
   stakeAmount: number;
@@ -396,7 +394,7 @@ export default function CardSelectPage() {
     }
   };
 
-  const handleRemoveCard = (cardNum: number) => {
+  const handleRemoveCard = () => {
     // Note: This would need backend support to remove a confirmed card
     // For now, just show a warning
     alert('Cannot remove confirmed card. Please contact support if needed.');

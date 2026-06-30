@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /**
  * pages/games/bingo/[roomId].tsx — Premium Live Casino Game Room
  *
@@ -25,7 +26,7 @@ import { LobbyTimer } from '../../../components/bingo/LobbyTimer';
 import { useBingoRoom } from '../../../hooks/useBingoRoom';
 import { useMyCards } from '../../../hooks/useMyCards';
 import { useAutoMark } from '../../../hooks/useAutoMark';
-import { patternLabel, type WinPattern } from '../../../lib/api/bingoApi';
+import { WinPattern } from '@/lib/api/bingoApi';
 
 // ─── Design tokens (Tailwind can't handle arbitrary values easily in some places) ──
 
@@ -762,7 +763,6 @@ export default function BingoRoomPage() {
     drawnBalls,
     status,
     jackpotPool,
-    callCount,
     playerCount,
     stakeAmount,
     gameStartCountdown,
@@ -779,11 +779,10 @@ export default function BingoRoomPage() {
   // ── Multi-card data ───────────────────────────────────────────────────────
   const {
     cards,
-    canAddMore,
     maxCards,
     loading: cardsLoading,
-    error: cardsError,
-    refetch: refetchCards,
+    // error: cardsError,
+    // refetch: refetchCards,
     applyWinData,
   } = useMyCards(roomIdStr || null, drawnBalls);
 

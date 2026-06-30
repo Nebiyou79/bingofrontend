@@ -30,7 +30,7 @@ import { useRouter } from 'next/router';
 import { useAuthContext } from '../../context/AuthContext';
 import { useHilo } from '../../hooks/useHilo';
 import { AppLayout } from '../../components/layout/AppLayout';
-import type { HiloCard, HiloOdds } from '../../lib/api/hiloApi';
+import type { HiloCard } from '../../lib/api/hiloApi';
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const BG      = '#080c14';
@@ -123,27 +123,6 @@ function PlayingCard({
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// ─── Card back ────────────────────────────────────────────────────────────────
-function CardBack({ size = 'lg' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const dims = { sm: [56,80], md: [80,112], lg: [140,196] }[size];
-  return (
-    <div style={{
-      width: dims[0], height: dims[1], borderRadius: 10,
-      border: `2px solid rgba(255,255,255,0.15)`,
-      background: 'linear-gradient(135deg, #1e3a5f, #0d1b2a)',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      flexShrink: 0,
-    }}>
-      <div style={{
-        width: '80%', height: '80%', borderRadius: 6,
-        border: '2px solid rgba(255,255,255,0.12)',
-        background: 'repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 8px)',
-      }} />
     </div>
   );
 }
@@ -450,7 +429,7 @@ const HiloPage: NextPage = () => {
 
   const {
     phase, session, result, error,
-    lastCard, startGame, guess, skip, cashout, reset, clearError,
+     startGame, guess, skip, cashout, reset, clearError,
   } = useHilo();
 
   const [balance, setBalance] = useState(user?.balance ?? 0);

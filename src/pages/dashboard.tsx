@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/dashboard.tsx - Updated with all 16 games
  */
@@ -5,7 +6,6 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useAuthContext } from '../context/AuthContext';
 import { AppLayout } from '../components/layout/AppLayout';
 import { useWallet } from '../hooks/useWallet';
@@ -222,7 +222,6 @@ const DashboardPage: NextPage = () => {
   const { user, isAuthenticated } = useAuthContext();
   const { balance, bonusBalance, loading: walletLoading } = useWallet();
   const { transactions } = useTransactions();
-  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState('All');
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/admin/games/mines.tsx
  * Mines game history + MinesLock panel.

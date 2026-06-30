@@ -76,7 +76,7 @@ export function SlotsBetPanel({
         </div>
         <div className="grid grid-cols-2 gap-2 relative z-10">
           <div className="rounded-lg px-3 py-2" style={{ background: 'rgba(0,0,0,0.30)' }}>
-            <p className="text-[9px] text-gray-500 uppercase tracking-wider font-bold mb-0.5">Today's Profit</p>
+            <p className="text-[9px] text-gray-500 uppercase tracking-wider font-bold mb-0.5">Today`s Profit</p>
             <p className={`text-sm font-bold font-mono ${todayProfit >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
               {todayProfit >= 0 ? '+' : ''}{todayProfit.toLocaleString()} ETB
             </p>

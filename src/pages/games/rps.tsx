@@ -16,6 +16,7 @@ import { RPSArena }         from '../../components/rps/RPSArena';
 import {
   IconRock, IconPaper, IconScissors, IconLink, IconLock,
   IconTrophy, IconOutcomeTie, IconOutcomeLoss,
+  IconCheck,
 } from '../../components/icons/GameIcons';
 import { GamePageWrapper } from '@/components/games/GamePageWrapper';
 import { getGameById } from '@/config/gameConfig';

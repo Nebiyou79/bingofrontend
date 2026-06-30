@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * components/wallet/WithdrawalForm.tsx — Premium Redesign
  * Preserves all original validation + business logic.

@@ -266,7 +266,7 @@ function PayoutTableSidebar({ numPicks }: { numPicks: number }) {
  * Contains: PayoutTable + Recent Results + Popular Picks.
  */
 function MobileInfoDrawer({
-  open, onClose, numPicks, drawnSoFar, onPopularPick, isBetting,
+  open, onClose, numPicks, drawnSoFar, onPopularPick,
 }: {
   open: boolean; onClose: () => void; numPicks: number;
   drawnSoFar: number[]; onPopularPick: (n: number) => void; isBetting: boolean;

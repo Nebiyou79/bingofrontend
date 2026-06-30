@@ -55,6 +55,7 @@ export interface PlayerCard {
 }
 
 export interface RoomSnapshot {
+  cardsInPlay: never[];
   stakeAmount: number;
   status: 'idle' | 'waiting' | 'playing';
   playerCount: number;

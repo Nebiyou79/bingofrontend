@@ -300,8 +300,7 @@ const ChickenPage: NextPage = () => {
               layout={lastResult?.layout}
               onCross={crossLane}
               disabled={isDisabled}
-              isShaking={isShaking}
-            />
+              isShaking={isShaking} previewDifficulty={'medium'} previewLaneCount={0}            />
             <ChickenBetPanel
               session={session}
               isLoading={loading || !authReady}

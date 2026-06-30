@@ -5,7 +5,26 @@
  */
 
 import React from 'react';
-import { Transaction } from '../../types';
+
+type TransactionStatus = 'pending' | 'submitted' | 'approved' | 'rejected' | 'completed' | 'expired';
+
+type TransactionMethod = 'telebirr' | 'cbe_birr' | string;
+
+interface Transaction {
+  _id: string;
+  status: TransactionStatus;
+  type: string;
+  amount: number;
+  method?: TransactionMethod;
+  reference?: string;
+  agentPhone?: string;
+  agentName?: string;
+  createdAt: string;
+  expiresAt?: string;
+  description?: string;
+  receiptUrl?: string;
+  processedAt?: string;
+}
 
 interface TransactionDetailProps {
   transaction: Transaction;

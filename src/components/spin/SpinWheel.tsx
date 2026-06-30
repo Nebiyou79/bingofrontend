@@ -77,7 +77,7 @@ interface SpinWheelProps {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function SpinWheel({ isSpinning, stopAngle, isWinner = false }: SpinWheelProps) {
+export function SpinWheel({ isSpinning, stopAngle }: SpinWheelProps) {
   const groupRef = useRef<SVGGElement>(null);
   const rotDeg   = useRef(0);
   const rafId    = useRef<number | null>(null);

@@ -16,8 +16,8 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useSlots, SlotPhase }                 from '../../hooks/useSlots';
-import { SlotSymbol }                          from '../../lib/api/slotsApi';
+import { useSlots, SlotPhase }                 from '../hooks/useSlots';
+import { SlotSymbol }                          from '../lib/api/slotsApi';
 
 // ─── Symbol display ───────────────────────────────────────────────────────────
 

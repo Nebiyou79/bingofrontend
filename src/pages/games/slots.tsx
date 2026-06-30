@@ -245,7 +245,7 @@ const SlotsPage: NextPage = () => {
           <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
             <h2 className="text-[10px] font-black text-gray-600 uppercase tracking-widest mb-2">🔒 Provably Fair</h2>
             <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
-              Each spin uses HMAC-SHA256(serverSeed, clientSeed + ":" + nonce) to derive reel stops.
+              Each spin uses HMAC-SHA256(serverSeed, clientSeed + &quot;:&quot; + nonce) to derive reel stops.
               The server seed hash is committed before you spin. After the spin, the raw seed is revealed.
               The nonce increments each spin so you can verify the complete history.
               Click <strong className="text-gray-500">Verify</strong> on any spin below.
