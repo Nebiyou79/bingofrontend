@@ -168,7 +168,7 @@ export const POCKET_POSITIONS = [
 // Add after the POCKET_POSITIONS export:
 
 // Rack positions [x, z] — mirrors RACK_POSITIONS in pool.physics.js
-export const RACK_POSITIONS = {
+export const RACK_POSITIONS: Record<number, [number, number]> = {
   0:  [-0.65,  0.000],
   1:  [ 0.550, 0.000],
   2:  [ 0.606, -0.029],
@@ -197,3 +197,36 @@ export const SNAPSHOT_ROT_SCALE  = 100;  // rx/ry/rz stored as int × 100
 
 export const SOCKET_NAMESPACE = '/pool';
 export const API_BASE         = '/api/pool';
+
+// ───────────────────────────────────────────────────────────────────────
+// 2D canvas (pixel-space) constants — used by PoolCanvas2D.tsx
+// Derived from the physics constants above so the 2D renderer always
+// stays in sync with the server's table/ball/pocket geometry.
+// ───────────────────────────────────────────────────────────────────────
+
+// Pixels-per-metre scale for the 2D top-down table render
+export const PX_PER_METER = 360;
+
+// Play-surface size in pixels (does NOT include the cushion/rail padding,
+// which PoolCanvas2D.tsx adds on top via its own CUSHION constant)
+export const TABLE_W_PX = Math.round(TABLE_HX * 2 * PX_PER_METER);
+export const TABLE_H_PX = Math.round(TABLE_HZ * 2 * PX_PER_METER);
+
+// Ball radius in pixels
+export const BALL_PX = Math.round(BALL_RADIUS * PX_PER_METER);
+
+// Pocket radius in pixels
+export const POCKET_R_PX = Math.round(POCKET_RADIUS * PX_PER_METER);
+
+// Convert a physics-space [x, z] coordinate (table-centred, metres) into
+// pixel-space [px, py] relative to the top-left of the play surface
+// (0,0). Does NOT include cushion/rail offset — callers add that.
+export function physToPixel(x: number, z: number) {
+  const px = (x + TABLE_HX) * PX_PER_METER;
+  const py = (z + TABLE_HZ) * PX_PER_METER;
+  return [px, py];
+}
+
+// Pocket positions pre-converted to pixel space, for direct use in canvas
+// drawing code (avoids recomputing physToPixel for every pocket per frame)
+export const POCKET_PX = POCKET_POSITIONS.map(([x, z]) => physToPixel(x, z));
