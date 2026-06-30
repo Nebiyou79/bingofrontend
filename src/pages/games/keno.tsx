@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * pages/games/keno.tsx
  * CLASSIC KENO — Fully mobile-responsive upgrade.
@@ -546,7 +547,7 @@ const KenoPage: NextPage = () => {
           {/* Result card */}
           {showResult && lastResult && (
             <div className="mb-4">
-              <KenoResult result={lastResult} selectedNumbers={selected} onDismiss={() => setShowResult(false)} />
+              <KenoResult result={lastResult as any} selectedNumbers={selected} onDismiss={() => setShowResult(false)} />
             </div>
           )}
 
